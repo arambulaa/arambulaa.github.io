@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Angel Arambula Engineering Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: an engineering drawing sheet. Blueprint-navy field with a faint grid,
+   mono labels like title-block annotations, each project laid out as a numbered sheet. */
+:root {
+  color-scheme: dark;
+  --bg: #0c131f;
+  --panel: #131c2b;
+  --line: #25334b;
+  --text: #dfe6f1;
+  --muted: #8d9db7;
+  --accent: #f4b83f;   /* the yellow of the combat robot frame */
+  --cool: #6fb6ff;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: var(--body); font-size: 16px; line-height: 1.6;
+  background-image:
+    linear-gradient(rgba(111,182,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(111,182,255,.045) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--cool); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+/* nav */
+header.nav {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(12,19,31,.92); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
+.brand { font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: .04em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+.brand span { color: var(--accent); }
+.nav nav { display: flex; gap: 22px; flex-wrap: wrap; }
+.nav nav a { font-family: var(--mono); font-size: 13px; color: var(--muted); text-decoration: none; letter-spacing: .04em; }
+.nav nav a:hover { color: var(--accent); }
+
+/* shared */
+.label { font-family: var(--mono); font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+h1, h2, h3 { font-family: var(--display); line-height: 1.05; margin: 0; text-wrap: balance; }
+h2 { font-size: clamp(34px, 5vw, 46px); font-weight: 600; text-transform: uppercase; letter-spacing: .02em; }
+section { padding: 72px 0; border-top: 1px solid var(--line); }
+.sec-head { display: flex; flex-direction: column; gap: 8px; margin-bottom: 36px; }
+p { margin: 0; max-width: 65ch; }
+ul.pts { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; max-width: 65ch; }
+ul.pts li { padding-left: 20px; position: relative; color: var(--text); }
+ul.pts li::before { content: ""; position: absolute; left: 0; top: .62em; width: 9px; height: 2px; background: var(--accent); }
+
+/* hero */
+.hero { padding: 64px 0 72px; }
+.hero .wrap { display: grid; grid-template-columns: 1.5fr 1fr; gap: 48px; align-items: center; }
+.hero h1 { font-size: clamp(56px, 10vw, 104px); font-weight: 700; text-transform: uppercase; letter-spacing: .01em; margin: 14px 0 20px; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero p.lead { font-size: 19px; color: var(--text); }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.btn { font-family: var(--mono); font-size: 14px; padding: 11px 18px; border: 1px solid var(--accent); color: var(--bg); background: var(--accent); text-decoration: none; border-radius: 2px; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn:hover { filter: brightness(1.1); }
+.portrait { position: relative; border: 1px solid var(--line); padding: 8px; background: var(--panel); }
+.portrait img { width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: 50% 20%; }
+.portrait figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); padding: 8px 2px 0; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+figure { margin: 0; }
+.specs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 56px; border: 1px solid var(--line); background: var(--panel); }
+.specs div { padding: 18px 20px; border-right: 1px solid var(--line); }
+.specs div:last-child { border-right: 0; }
+.specs b { display: block; font-family: var(--display); font-size: 34px; font-weight: 600; line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+.specs span { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+/* about */
+.about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; }
+.about-grid .bio { display: flex; flex-direction: column; gap: 16px; font-size: 17px; }
+.kv { border: 1px solid var(--line); background: var(--panel); }
+.kv div { display: grid; grid-template-columns: 110px 1fr; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+.kv div:last-child { border-bottom: 0; }
+.kv dt, .kv .k { font-family: var(--mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; padding-top: 2px; }
+
+/* experience */
+.job { border: 1px solid var(--line); background: var(--panel); padding: 28px; display: flex; flex-direction: column; gap: 18px; border-left: 3px solid var(--accent); }
+.job-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.job h3 { font-size: 30px; font-weight: 600; }
+.meta { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.skills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 28px; }
+.skills > div { border: 1px solid var(--line); background: var(--panel); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips span { font-family: var(--mono); font-size: 12.5px; padding: 4px 9px; border: 1px solid var(--line); color: var(--text); border-radius: 2px; }
+.course { margin-top: 20px; border: 1px solid var(--line); background: var(--panel); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+
+/* projects */
+.project { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 44px 0; border-top: 1px dashed var(--line); align-items: start; }
+.project:first-of-type { border-top: 0; padding-top: 0; }
+.project:nth-of-type(even) .shots { order: -1; }
+.p-text { display: flex; flex-direction: column; gap: 16px; }
+.p-text h3 { font-size: 36px; font-weight: 600; text-transform: uppercase; }
+.p-text h4 { font-family: var(--mono); font-weight: 500; font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 6px 0 0; }
+.shots { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.shots figure { border: 1px solid var(--line); background: var(--panel); padding: 6px; }
+.shots figure.wide { grid-column: 1 / -1; }
+.shots img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: #fff; }
+.shots figure.wide img { aspect-ratio: 16/9; }
+.shots img.fit { object-fit: contain; }
+.shots figcaption { font-family: var(--mono); font-size: 11.5px; color: var(--muted); padding: 6px 2px 0; }
+
+/* contact */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.card { border: 1px solid var(--line); background: var(--panel); padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+.card .val { font-family: var(--mono); font-size: 16px; overflow-wrap: anywhere; color: var(--text); }
+.card .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+.btn.sm { font-size: 12.5px; padding: 7px 12px; }
+.interests { margin-top: 28px; display: flex; flex-direction: column; gap: 12px; }
+footer { border-top: 1px solid var(--line); padding: 24px 0 40px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+@media (max-width: 820px) {
+  .hero .wrap, .about-grid, .project, .contact-grid { grid-template-columns: 1fr; }
+  .project:nth-of-type(even) .shots { order: 0; }
+  .portrait { max-width: 360px; }
+  .specs { grid-template-columns: 1fr 1fr; }
+  .specs div:nth-child(2) { border-right: 0; }
+  .specs div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .skills { grid-template-columns: 1fr; }
+  section { padding: 56px 0; }
+}
+@media (max-width: 480px) {
+  .wrap { padding: 0 16px; }
+  .nav nav { gap: 14px; }
+  .kv div { grid-template-columns: 1fr; gap: 2px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">Angel <span>Arambula</span></a>
+    <nav aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <div class="label">Mechanical Engineering · UC Berkeley</div>
+      <h1>Angel <em>Arambula</em></h1>
+      <p class="lead">I design, build and fly things that have to hold steady: flight control laws, autonomous drones, combat robots and RC aircraft. My focus is guidance, navigation and control.</p>
+      <div class="cta">
+        <a class="btn" href="#projects">See my projects</a>
+        <a class="btn ghost" href="#contact">Get in touch</a>
+      </div>
+    </div>
+    <figure class="portrait">
+      <img src="img/angel.jpg" alt="Angel Arambula holding a project build in a UC Berkeley lab">
+      <figcaption><span>Angel Arambula</span><span>Berkeley, CA</span></figcaption>
+    </figure>
+  </div>
+  <div class="wrap" style="display:block">
+    <div class="specs">
+      <div><b>777X</b><span>Boeing control laws intern</span></div>
+      <div><b>±5 cm</b><span>Autonomous drone mission accuracy</span></div>
+      <div><b>1 lb</b><span>Antweight combat robot</span></div>
+      <div><b>2027</b><span>B.S. Mechanical Engineering</span></div>
+    </div>
+  </div>
+</div>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head"><div class="label">01 / About</div><h2>About me</h2></div>
+    <div class="about-grid">
+      <div class="bio">
+        <p>Hi! I'm Angel Arambula, a Mechanical Engineering major at UC Berkeley. I have professional experience in the GNC side of the aerospace industry, with interests in controls, mechatronic systems and robotics.</p>
+        <p>My current fascination is guidance, navigation and control. I like working where the math meets the hardware: tuning an estimator, then watching the vehicle actually hold its position.</p>
+      </div>
+      <div class="kv">
+        <div><span class="k">School</span><span>University of California, Berkeley</span></div>
+        <div><span class="k">Degree</span><span>B.S. Mechanical Engineering, expected May 2027</span></div>
+        <div><span class="k">Focus</span><span>Controls, mechatronics, robotics</span></div>
+        <div><span class="k">Based in</span><span>Berkeley, CA</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head"><div class="label">02 / Experience and skills</div><h2>Experience</h2></div>
+
+    <article class="job">
+      <div class="job-head">
+        <h3>777X Primary Control Laws Intern</h3>
+        <span class="meta">Boeing · Everett, WA · May to August 2026</span>
+      </div>
+      <p>I worked on stability analysis for the 777X flight control laws using MATLAB and Simulink.</p>
+      <ul class="pts">
+        <li>Built a MATLAB stability robustness tool for a 777X control law that runs hundreds of uncertainty cases at once for each flight condition.</li>
+        <li>Used the tool's results to find and justify correlations across the uncertainty cases.</li>
+        <li>Debugged and modified Simulink models to fix linearization errors, closely matching in-house nonlinear simulations so the tool had accurate inputs.</li>
+        <li>Restructured the team's onboarding process with new documentation, reducing ramp-up time for new team members.</li>
+      </ul>
+    </article>
+
+    <div class="skills">
+      <div>
+        <div class="label">Software</div>
+        <div class="chips"><span>SolidWorks</span><span>Fusion 360</span><span>AutoCAD</span><span>Simulink</span><span>Git</span><span>Excel</span></div>
+      </div>
+      <div>
+        <div class="label">Programming</div>
+        <div class="chips"><span>C++</span><span>Python</span><span>MATLAB</span></div>
+      </div>
+      <div>
+        <div class="label">Prototyping</div>
+        <div class="chips"><span>3D printing</span><span>Laser cutting</span><span>Milling</span><span>Turning</span><span>Soldering</span><span>GD&amp;T</span><span>Rapid prototyping</span></div>
+      </div>
+    </div>
+    <div class="course">
+      <div class="label">Coursework</div>
+      <div class="chips"><span>Dynamic Systems and Feedback</span><span>Dynamics and Control of Autonomous Flight</span><span>Introduction to Flight Mechanics</span><span>Electronics for the Internet of Things</span><span>Heat Transfer</span><span>Fluid Mechanics</span><span>Thermodynamics</span><span>Engineering Mechanics</span><span>Design for Human Body</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head"><div class="label">03 / Projects</div><h2>Projects</h2></div>
+
+    <article class="project">
+      <div class="p-text">
+        <div class="label">Sheet 1 of 5 · Controls Lead</div>
+        <h3>Autonomous Drone</h3>
+        <p>A Crazyflie quadcopter programmed in C++ for ME 136, Dynamics and Control of Autonomous Flight. Our team built it up from motor maps to closed-loop hover, then flew an autonomous mission: a 50 cm altitude hold and a 1 m lateral move, within ±5 cm. As controls lead, I worked on state estimation and optical flow sensing.</p>
+        <h4>How it estimates its state</h4>
+        <ul class="pts">
+          <li><strong>Attitude:</strong> a complementary filter fusing gyro and accelerometer data, with gyro bias removal.</li>
+          <li><strong>Horizontal velocity:</strong> optical flow, corrected for rotation and scaled by height.</li>
+          <li><strong>Height:</strong> a distance sensor fused with accelerometer-based vertical velocity.</li>
+        </ul>
+        <div class="chips"><span>C++</span><span>State estimation</span><span>Optical flow</span><span>Feedback control</span></div>
+      </div>
+      <div class="shots">
+        <figure class="wide"><img src="img/drone.jpg" alt="Crazyflie quadcopter hovering with its rotors spinning"><figcaption>Crazyflie in closed-loop hover</figcaption></figure>
+      </div>
+    </article>
+
+    <article class="project">
+      <div class="p-text">
+        <div class="label">Sheet 2 of 5 · Team Lead</div>
+        <h3>Combat Robotics</h3>
+        <p>A 1 lb antweight combat robot built by a four-person team. It survived three rounds of a tournament-style competition before a drive malfunction knocked it out.</p>
+        <h4>My role</h4>
+        <ul class="pts">
+          <li>Led the team through design, build and competition.</li>
+          <li>Modeled a symmetrical 3D-printed frame in Fusion 360 with motors, electronics and servos built into the structure.</li>
+          <li>Used tolerance-driven mounts to secure parts while saving weight.</li>
+        </ul>
+        <div class="chips"><span>Fusion 360</span><span>3D printing</span><span>Team leadership</span></div>
+      </div>
+      <div class="shots">
+        <figure class="wide"><img src="img/bot-photo.jpg" alt="Yellow 3D-printed combat robot on a workbench"><figcaption>The finished robot</figcaption></figure>
+        <figure><img class="fit" src="img/bot-cad-closed.jpg" alt="CAD model of the robot frame with the lid on"><figcaption>Frame, lid on</figcaption></figure>
+        <figure><img class="fit" src="img/bot-cad-open.jpg" alt="CAD model of the robot frame showing internal components"><figcaption>Internal layout</figcaption></figure>
+      </div>
+    </article>
+
+    <article class="project">
+      <div class="p-text">
+        <div class="label">Sheet 3 of 5 · Research Assistant</div>
+        <h3>OpenCAL</h3>
+        <p>OpenCAL is an open-source volumetric additive manufacturing project that builds parts with light. I work on it in UC Berkeley's Design for Emerging and Nanoscale Manufacturing lab.</p>
+        <h4>My role</h4>
+        <ul class="pts">
+          <li>Wrote public user guides on Read the Docs, turning light-based fabrication workflows into clear instructions.</li>
+          <li>Designed an enclosure for the system.</li>
+          <li>Co-developed parametric CAD parts that users can modify to build their own.</li>
+        </ul>
+        <div class="chips"><span>CAD</span><span>Technical writing</span><span>Additive manufacturing</span></div>
+      </div>
+      <div class="shots">
+        <figure class="wide"><img src="img/opencal-photo.jpg" alt="OpenCAL printer with its side panel open, showing the optics"><figcaption>OpenCAL system, optics exposed</figcaption></figure>
+        <figure class="wide"><img class="fit" src="img/opencal-cad.jpg" alt="CAD render of the OpenCAL enclosure"><figcaption>Enclosure CAD</figcaption></figure>
+      </div>
+    </article>
+
+    <article class="project">
+      <div class="p-text">
+        <div class="label">Sheet 4 of 5 · ME 100 team project</div>
+        <h3>Solar Shade</h3>
+        <p>An automated window blind built by a three-person team. A solar cell senses sunlight, and an ESP32 opens or closes the blinds on its own to keep rooms cooler. It works without Wi-Fi, and IFTTT sends status alerts.</p>
+        <h4>How it works</h4>
+        <ul class="pts">
+          <li><strong>Sensing:</strong> a solar cell read by an INA219, plus a VEML7700 light sensor.</li>
+          <li><strong>Control:</strong> the ESP32 runs the motor when solar voltage crosses a threshold.</li>
+          <li><strong>Actuation:</strong> a 6 V micromotor on a DRV8833 H-bridge turns the blind rod.</li>
+          <li><strong>Data:</strong> readings are logged to Adafruit IO, and alerts go through IFTTT.</li>
+        </ul>
+        <h4>Key challenges</h4>
+        <ul class="pts">
+          <li>Controlling the motor's speed and travel.</li>
+          <li>Designing the geometry for opening and closing the blinds.</li>
+          <li>Keeping the code from repeating a command, which jammed the motor.</li>
+          <li>Sending data for live plots without overwhelming the wireless control signal.</li>
+        </ul>
+        <div class="chips"><span>ESP32</span><span>Python</span><span>Circuit design</span><span>IoT</span></div>
+      </div>
+      <div class="shots">
+        <figure class="wide"><img src="img/solar-demo.jpg" alt="Prototype window blind next to a laptop showing a live data dashboard"><figcaption>Prototype with live dashboard</figcaption></figure>
+        <figure class="wide"><img class="fit" src="img/solar-circuit.jpg" alt="Wiring diagram of the ESP32, sensors, motor driver and solar cell"><figcaption>Wiring diagram</figcaption></figure>
+      </div>
+    </article>
+
+    <article class="project">
+      <div class="p-text">
+        <div class="label">Sheet 5 of 5 · Control Surfaces Team</div>
+        <h3>Cal Aero SAE</h3>
+        <p>Cal Aero SAE designs and builds an RC aircraft for SAE competition. On the control surfaces team, I size the control surfaces, test wing covering methods and design the aileron servo mounts.</p>
+        <h4>My role</h4>
+        <ul class="pts">
+          <li>Wrote MATLAB scripts to calculate control surface sizing and maximize control surface effectiveness.</li>
+          <li>Ran R&amp;D on monokoting techniques to minimize wing warping, checked against ANSYS and XFLR5 simulations.</li>
+          <li>Modeled and prototyped a new aileron servo mount in SolidWorks that sits with the wing ribs while staying light and keeping the wing rigid.</li>
+        </ul>
+        <div class="chips"><span>MATLAB</span><span>SolidWorks</span><span>ANSYS</span><span>XFLR5</span></div>
+      </div>
+      <div class="shots">
+        <figure class="wide"><img src="img/aero.jpg" alt="Blue RC aircraft lifting off from a runway"><figcaption>Competition aircraft at takeoff</figcaption></figure>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head"><div class="label">04 / Contact</div><h2>Get in touch</h2></div>
+    <div class="contact-grid">
+      <div class="card">
+        <div class="label">Email</div>
+        <div class="val" id="email">angelarambula@berkeley.edu</div>
+        <div class="row">
+          <a class="btn sm" href="mailto:angelarambula@berkeley.edu">Write an email</a>
+          <button class="btn sm ghost" id="copy-email" type="button">Copy address</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="label">LinkedIn</div>
+        <div class="val">linkedin.com/in/angelarambula</div>
+        <div class="row">
+          <a class="btn sm" href="https://www.linkedin.com/in/angelarambula" target="_blank" rel="noopener">Open LinkedIn profile</a>
+        </div>
+      </div>
+    </div>
+    <div class="interests">
+      <div class="label">Outside the lab</div>
+      <div class="chips"><span>Formula 1</span><span>Mechatronics</span><span>Biking</span><span>PC building</span><span>Football</span><span>Soccer</span><span>Music</span><span>Running</span><span>Climbing</span></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap">Angel Arambula · Mechanical Engineering, UC Berkeley</div></footer>
+
+<script>
+document.getElementById('copy-email').addEventListener('click', function () {
+  var b = this, t = document.getElementById('email').textContent;
+  navigator.clipboard.writeText(t).then(function () {
+    b.textContent = 'Copied';
+    setTimeout(function () { b.textContent = 'Copy address'; }, 1600);
+  }).catch(function () { b.textContent = 'Select the address to copy'; });
+});
+</script>
+</body>
+</html>
